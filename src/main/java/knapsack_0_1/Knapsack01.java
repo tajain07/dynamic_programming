@@ -6,6 +6,7 @@ import java.util.Arrays;
  * Return max profit
  */
 public class Knapsack01 {
+    static int callCount = 0;
 
     // 1 - recursive
     public static int knapsack01_recursive(int[] wt, int[] val, int W, int n) {
@@ -13,6 +14,7 @@ public class Knapsack01 {
             return 0;
         }
 
+        callCount++;
         if (wt[n - 1] <= W) {
             int valIncluding = val[n - 1] + knapsack01_recursive(wt, val, W - wt[n - 1], n - 1);
             int valExcluding = knapsack01_recursive(wt, val, W, n - 1);
@@ -34,6 +36,7 @@ public class Knapsack01 {
             return t[n][W];
         }
 
+        callCount++;
         if (wt[n - 1] <= W) {
             int valIncluding = val[n - 1] + knapsack01_recursive(wt, val, W - wt[n - 1], n - 1);
             int valExcluding = knapsack01_recursive(wt, val, W, n - 1);
@@ -62,7 +65,7 @@ public class Knapsack01 {
 
         for (int row = 1; row <= n; row++) {
             for (int col = 1; col <= W; col++) {
-                if (wt[row-1] <= col) {
+                if (wt[row - 1] <= col) {
                     dp[row][col] = Math.max(val[row - 1] + dp[row - 1][col - wt[row - 1]], dp[row - 1][col]);
                 } else {
                     dp[row][col] = dp[row - 1][col];
@@ -79,8 +82,10 @@ public class Knapsack01 {
         int[] val = new int[]{1, 4, 5, 7};
         int W = 7;
         int n = wt.length;
+        callCount = 0;
         int maxValue = knapsack01_recursive(wt, val, 7, n);
-        System.out.println(maxValue);
+        System.out.println("callCount " + callCount + " " + maxValue);
+
 
         int[][] t = new int[n + 1][W + 1];
 
@@ -88,9 +93,11 @@ public class Knapsack01 {
             Arrays.fill(x, -1);
         }
 
+        callCount = 0;
         maxValue = knapsack01_memoization(wt, val, W, n, t);
-        System.out.println(maxValue);
+        System.out.println("callCount " + callCount + " " + maxValue);
 
+        callCount = 0;
         maxValue = knapsack01_tabulation(wt, val, W, n);
         System.out.println(maxValue);
 
