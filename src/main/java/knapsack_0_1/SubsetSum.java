@@ -13,7 +13,7 @@ public class SubsetSum {
         boolean result = isSubsetSumPresent_recursive(n, arr, sum);
         System.out.println("callCount " + callCount + " " + result);
 
-        boolean[][] t = new boolean[n + 1][sum + 1];
+        Boolean[][] t = new Boolean[n + 1][sum + 1];
         callCount = 0;
         final boolean subsetSumPresent_memoized = isSubsetSumPresent_memoized(n, arr, sum, t);
         System.out.println("callCount " + callCount + " subsetSumPresent_memoized " + subsetSumPresent_memoized);
@@ -69,7 +69,7 @@ public class SubsetSum {
      * @param t
      * @return
      */
-    private static boolean isSubsetSumPresent_memoized(int n, int[] arr, int sum, boolean[][] t) {
+    private static boolean isSubsetSumPresent_memoized(int n, int[] arr, int sum, Boolean[][] t) {
         //sum is 0 means
         // 1. either we have achieved the required the sum
         // 2. required sum is 0
@@ -81,7 +81,7 @@ public class SubsetSum {
             return false;
         }
 
-        if (t[n][sum]) {
+        if (t[n][sum] != null) {
             return t[n][sum];
         }
 
@@ -125,18 +125,11 @@ public class SubsetSum {
                 } else {
                     dp[row][currentSum] = dp[row - 1][currentSum] || dp[row - 1][currentSum - val];
                 }
+            }
 
-                // optimization - if we found an answer then we can return true, no need to go further
-                if (dp[row][currentSum]) {
-                    /*
-                    for (boolean[] x : dp) {
-                        System.out.println(Arrays.toString(x));
-                    }
-                    System.out.println("row " + row + " col " + currentSum);
-                    */
-
-                    return true;
-                }
+            // optimization - if we found an answer then we can return true, no need to go further
+            if (dp[row][sum]) {
+                return true;
             }
         }
 
